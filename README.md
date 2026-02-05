@@ -47,3 +47,13 @@ The available configuration options are:
 - `EnableShuffle`: Enable or disable shuffle functionality (default: true).
 
 - `EnableVanillaMusic`: Enable or disable the default music tracks (default: true).
+
+
+## Contributing
+Copy `Assembly-CSharp.dll` and `UnityEngine.UI.dll` from the game's installation directory and put them in `lib/`
+
+Example Commands (change based on your steam library location):
+```bash
+cp "C:\Program Files (x86)\Steam\steamapps\common\On-Together Virtual Co-Working\OnTogether_Data\Managed\Assembly-CSharp.dll" lib/
+cp "C:\Program Files (x86)\Steam\steamapps\common\On-Together Virtual Co-Working\OnTogether_Data\Managed\UnityEngine.UI.dll" lib/
+```

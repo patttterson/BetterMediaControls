@@ -6,7 +6,6 @@ using BetterMediaControls.util;
 
 namespace BetterMediaControls.patches;
 
-
 [HarmonyPatch(typeof(SoundManager), nameof(SoundManager.ChangeSong))]
 [HarmonyPatch([typeof(bool)])]
 public static class ShufflePatch
