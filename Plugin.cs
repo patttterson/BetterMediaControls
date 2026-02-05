@@ -42,7 +42,7 @@ public class Plugin : BaseUnityPlugin
             "General",
             "MusicDirectory",
             "music",
-            "NOTE: .wav files only. Directory inside the plugin folder where custom music is stored."
+            "Supports .wav, .ogg, and .mp3 files. Directory inside the plugin folder where custom music is stored."
         );
 
         _configVanillaMusicEnabled = Config.Bind(

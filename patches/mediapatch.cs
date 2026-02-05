@@ -103,11 +103,12 @@ public static class MediaPatch
 
                 log.LogDebug($"Loading song: {audioPath}");
 
-                var clip = AudioLoader.LoadAudio(audioPath);
+                UnityEngine.AudioClip clip = null;
+                yield return AudioLoader.LoadAudio(audioPath, c => clip = c);
 
                 if (!clip)
                 {
-                    log.LogError($"Failed to load WAV: {audioPath}");
+                    log.LogError($"Failed to load audio: {audioPath}");
                     continue;
                 }
 
@@ -131,16 +132,20 @@ public static class MediaPatch
         }
         else
         {
-            var files = Directory.GetFiles(musicDir, "*.wav");
+            var files = Directory.GetFiles(musicDir);
 
             for (int i = files.Length - 1; i >= 0; i--)
             {
                 var audioPath = files[i];
-                var clip = AudioLoader.LoadAudio(audioPath);
+                if (!AudioLoader.IsSupportedFile(audioPath))
+                    continue;
+
+                UnityEngine.AudioClip clip = null;
+                yield return AudioLoader.LoadAudio(audioPath, c => clip = c);
 
                 if (!clip)
                 {
-                    log.LogError($"Failed to load WAV: {audioPath}");
+                    log.LogError($"Failed to load audio: {audioPath}");
                     continue;
                 }
 

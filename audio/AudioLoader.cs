@@ -1,39 +1,59 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace BetterMediaControls.audio
 {
     public static class AudioLoader
     {
-        public static AudioClip LoadAudio(string path)
+        private static readonly string[] SupportedExtensions = { ".wav", ".ogg", ".mp3" };
+
+        public static bool IsSupportedFile(string path)
         {
-            byte[] bytes = File.ReadAllBytes(path);
-
-            int channels = BitConverter.ToInt16(bytes, 22);
-            int sampleRate = BitConverter.ToInt32(bytes, 24);
-            int dataIndex = 44;
-            int sampleCount = (bytes.Length - dataIndex) / 2;
-
-            float[] samples = new float[sampleCount];
-
-            int offset = 0;
-            for (int i = dataIndex; i < bytes.Length; i += 2)
+            var ext = Path.GetExtension(path);
+            foreach (var supported in SupportedExtensions)
             {
-                short sample = BitConverter.ToInt16(bytes, i);
-                samples[offset++] = sample / 32768f;
+                if (string.Equals(ext, supported, StringComparison.OrdinalIgnoreCase))
+                    return true;
             }
+            return false;
+        }
 
-            var clip = AudioClip.Create(
-                Path.GetFileNameWithoutExtension(path),
-                sampleCount / channels,
-                channels,
-                sampleRate,
-                false
-            );
+        public static IEnumerator LoadAudio(string path, Action<AudioClip> onLoaded)
+        {
+            var uri = "file:///" + path.Replace("\\", "/");
+            var audioType = GetAudioType(path);
 
-            clip.SetData(samples, 0);
-            return clip;
+            using (var request = UnityWebRequestMultimedia.GetAudioClip(uri, audioType))
+            {
+                ((DownloadHandlerAudioClip)request.downloadHandler).streamAudio = true;
+                yield return request.SendWebRequest();
+
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Plugin.Log.LogError($"Failed to load audio {path}: {request.error}");
+                    onLoaded(null);
+                    yield break;
+                }
+
+                var clip = DownloadHandlerAudioClip.GetContent(request);
+                clip.name = Path.GetFileNameWithoutExtension(path);
+                onLoaded(clip);
+            }
+        }
+
+        private static AudioType GetAudioType(string path)
+        {
+            var ext = Path.GetExtension(path)?.ToLowerInvariant();
+            switch (ext)
+            {
+                case ".ogg": return AudioType.OGGVORBIS;
+                case ".mp3": return AudioType.MPEG;
+                case ".wav": return AudioType.WAV;
+                default: return AudioType.UNKNOWN;
+            }
         }
     }
 }
