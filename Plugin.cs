@@ -9,7 +9,6 @@ using UnityEngine;
 namespace BetterMediaControls;
 
 [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
-[BepInProcess("OnTogether.exe")]
 public class Plugin : BaseUnityPlugin
 {
     public static Plugin Instance { get; private set; }
@@ -17,7 +16,7 @@ public class Plugin : BaseUnityPlugin
     // ReSharper disable once InconsistentNaming
     private const string PluginGUID = "com.patty.bettermediacontrols";
     private const string PluginName = "Better Media Controls";
-    private const string PluginVersion = "0.1.0";
+    private const string PluginVersion = "1.0.1";
 
     private readonly Harmony _harmony = new Harmony(PluginGUID);
 

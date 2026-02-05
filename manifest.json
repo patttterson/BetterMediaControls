@@ -1,6 +1,6 @@
 {
     "name": "BetterMediaControls",
-    "version_number": "1.0.0",
+    "version_number": "1.0.1",
     "website_url": "https://github.com/patttterson/BetterMediaControls",
     "description": "A simple plugin for On-Together: Virtual Co-Working that adds custom songs and shuffle functionality to the media controls.",
     "dependencies": []
