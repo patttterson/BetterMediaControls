@@ -21,8 +21,15 @@
     <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
     <PackageReference Include="UnityEngine.Modules" Version="6000.0.61" IncludeAssets="compile" />
     <PackageReference Include="Newtonsoft.Json" Version="13.*" />
-    <Reference Include="C:\Program Files (x86)\Steam\steamapps\common\On-Together\On-Together\OnTogether_Data\Managed\Assembly-CSharp.dll" />
-    <Reference Include="C:\Program Files (x86)\Steam\steamapps\common\On-Together\On-Together\OnTogether_Data\Managed\UnityEngine.UI.dll" />
+    <PackageReference Include="BepInEx.Core" Version="5.*" />
+    <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+    <PackageReference Include="UnityEngine.Modules" Version="6000.0.61" IncludeAssets="compile" />
+  </ItemGroup>
+
+  <ItemGroup Condition="Exists('$(ON_TOGETHER_DATA_DIR)/Managed/Assembly-CSharp.dll')">
+      <Reference Include="Assembly-CSharp">
+          <HintPath>$(ON_TOGETHER_DATA_DIR)/Managed/Assembly-CSharp.dll</HintPath>
+      </Reference>
   </ItemGroup>
   
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
