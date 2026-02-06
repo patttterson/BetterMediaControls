@@ -1,0 +1,10 @@
+﻿{
+  "playlist": [
+    {
+      "file": "example.wav",
+      "title": "Example Song",
+      "artist": "Remove Me",
+      "volume": 0.5
+    }
+  ]
+}

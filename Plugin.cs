@@ -16,8 +16,9 @@ public class Plugin : BaseUnityPlugin
 
     // ReSharper disable once InconsistentNaming
     private const string PluginGUID = "com.patty.bettermediacontrols";
-    private const string PluginName = "Better Media Controls";
-    private const string PluginVersion = "0.1.0";
+    private const string PluginName = "BetterMediaControls";
+    private const string PluginVersion = "1.1.0";
+    private const string PluginAuthor = "CutiePatooties"; // as seen on thunderstore
 
     private readonly Harmony _harmony = new Harmony(PluginGUID);
 
@@ -61,6 +62,7 @@ public class Plugin : BaseUnityPlugin
         
         var iconsDir = Path.Combine(
             Paths.PluginPath,
+            $"{PluginAuthor}-{PluginName}",
             "BetterMediaControls",
             "icons"
         );
@@ -87,7 +89,7 @@ public class Plugin : BaseUnityPlugin
         _configShuffleEnabled.Value = !_configShuffleEnabled.Value;
         if (_configShuffleEnabled.Value)
         {
-            BetterMediaControls.patches.ShufflePatch.ResetShuffle();
+            patches.ShufflePatch.ResetShuffle();
         }
         Log.LogInfo($"Shuffle {(IsShuffleEnabled ? "enabled" : "disabled")}");
     }
@@ -102,6 +104,7 @@ public class Plugin : BaseUnityPlugin
 
         return Path.Combine(
             Paths.PluginPath,
+            $"{PluginAuthor}-{PluginName}",
             "BetterMediaControls",
             value
         );

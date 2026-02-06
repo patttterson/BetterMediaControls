@@ -1,9 +1,12 @@
-name: Publish to Thunderstore
+name: Bundle Release
 
 on:
   push:
     tags:
       - "v*.*.*"
+
+permissions:
+  contents: write
 
 jobs:
   publish:
@@ -28,33 +31,30 @@ jobs:
         run: |
           mkdir -p thunderstore/BepInEx/plugins/BetterMediaControls
 
-          # plugin dll
           cp bin/Release/netstandard2.1/BetterMediaControls.dll \
              thunderstore/BepInEx/plugins/BetterMediaControls/
 
-          # runtime assets
-          cp -r audio thunderstore/BepInEx/plugins/BetterMediaControls/ || true
-          cp -r icons thunderstore/BepInEx/plugins/BetterMediaControls/ || true
+          mkdir -p thunderstore/BepInEx/plugins/BetterMediaControls/music
+          mkdir -p thunderstore/BepInEx/plugins/BetterMediaControls/icons
 
-          # thunderstore metadata
-          cp manifest.json thunderstore/
+          cp icons/*.png thunderstore/BepInEx/plugins/BetterMediaControls/icons/
+          cp thunderstore/playlist.json thunderstore/BepInEx/plugins/BetterMediaControls/music/
+
           cp README.md thunderstore/
-          cp icon.png thunderstore/
-
-      - name: Upload Thunderstore Package
-        uses: GreenTF/upload-thunderstore-package@v4.3
+      
+      - name: Create Thunderstore package
+        run: |
+          cd thunderstore
+          zip -r ../CutiePatooties-BetterMediaControls-${{ github.ref_name }}.zip ./*
+    
+      - name: Create Github Draft Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
         with:
-          path: thunderstore
-          community: on-together
-          namespace: CutiePatooties
-          name: BetterMediaControls
-          version: ${{ github.ref_name }}
-          description: Better media controls with shuffle, playlists, and custom audio.
-          token: ${{ secrets.THUNDERSTORE_TOKEN }}
-          website: https://github.com/${{ github.repository }}
-          categories: |
-            Mods
-            Tools
-            Audio
-          deps: |
-            BepInEx-BepInExPack-5.4.2100
+          draft: true
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          body: "Release ${{ github.ref_name }}"
+          files: CutiePatooties-BetterMediaControls-${{ github.ref_name }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
