@@ -154,7 +154,7 @@ public static class MediaPatch
                     Title = Path.GetFileNameWithoutExtension(audioPath),
                     Artist = "Unknown",
                     Music = clip,
-                    Volume = 1.0f
+                    Volume = 0.5f
                 };
 
                 songs.Insert(0, song);

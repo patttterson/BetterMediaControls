@@ -2,10 +2,9 @@
 A simple plugin for [On-Together: Virtual Co-Working](https://store.steampowered.com/app/3707400/OnTogether_Virtual_CoWorking/) that adds custom songs and shuffle functionality to the media controls.
 
 ## Custom Songs
-You can add your own custom songs to the media controls by placing audio files in the `BepInEx/plugins/BetterMediaControls/music` directory.
+You can add your own custom songs to the media controls by placing audio files in the `BepInEx/config/BetterMediaControls-Music` directory.
 
 Currently, `.wav`, `.ogg`, and `.mp3` files are supported. Any other file formats will be ignored.
-> [!NOTE]
 > Use https://vert.sh/ for quick and easy audio file conversion
 
 ### Identifying
@@ -45,5 +44,4 @@ You can configure the plugin by editing the `BepInEx/config/BetterMediaControls.
 The available configuration options are:
 - `MusicDirectory`: The directory where custom music files are stored (default: `music` [starting from plugin directory]).
 - `EnableShuffle`: Enable or disable shuffle functionality (default: true).
-
 - `EnableVanillaMusic`: Enable or disable the default music tracks (default: true).

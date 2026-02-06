@@ -17,7 +17,7 @@ public class Plugin : BaseUnityPlugin
     // ReSharper disable once InconsistentNaming
     private const string PluginGUID = "com.patty.bettermediacontrols";
     private const string PluginName = "BetterMediaControls";
-    private const string PluginVersion = "1.1.0";
+    private const string PluginVersion = "1.1.1";
     private const string PluginAuthor = "CutiePatooties"; // as seen on thunderstore
 
     private readonly Harmony _harmony = new Harmony(PluginGUID);
@@ -30,7 +30,7 @@ public class Plugin : BaseUnityPlugin
     public bool IsShuffleEnabled => _configShuffleEnabled.Value;
 
     public static ManualLogSource Log { get; private set; }
-    
+
     public Sprite ShuffleOnSprite { get; private set; }
     public Sprite ShuffleOffSprite { get; private set; }
 
@@ -42,7 +42,7 @@ public class Plugin : BaseUnityPlugin
         _configMusicDir = Config.Bind(
             "General",
             "MusicDirectory",
-            "music",
+            Path.Combine(Paths.ConfigPath, "BetterMediaControls-Music"),
             "Supports .wav, .ogg, and .mp3 files. Directory inside the plugin folder where custom music is stored."
         );
 
@@ -59,7 +59,7 @@ public class Plugin : BaseUnityPlugin
             false,
             "self explanatory. uses spotify shuffle (Fisher–Yates) algorithm."
         );
-        
+
         var iconsDir = Path.Combine(
             Paths.PluginPath,
             $"{PluginAuthor}-{PluginName}",
@@ -80,6 +80,34 @@ public class Plugin : BaseUnityPlugin
             Log.LogWarning("Shuffle icons missing or failed to load");
         }
 
+        var musicDir = GetMusicDirectory();
+        if (!Directory.Exists(musicDir))
+        {
+            try
+            {
+                Directory.CreateDirectory(musicDir);
+                Log.LogInfo($"Created music directory at {musicDir}");
+            }
+            catch (System.Exception e)
+            {
+                Log.LogError($"Failed to create music directory at {musicDir}: {e}");
+            }
+        }
+
+        var playlistPath = Path.Combine(musicDir, "playlist.json");
+        if (!File.Exists(playlistPath))
+        {
+            try
+            {
+                File.WriteAllText(playlistPath, "{\"playlist\":[]}");
+                Log.LogInfo($"Created empty playlist.json at {playlistPath}");
+            }
+            catch (System.Exception e)
+            {
+                Log.LogError($"Failed to create playlist.json at {playlistPath}: {e}");
+            }
+        }
+
         Logger.LogInfo($"Plugin {PluginGUID} is loaded!");
         _harmony.PatchAll();
     }
@@ -91,6 +119,7 @@ public class Plugin : BaseUnityPlugin
         {
             patches.ShufflePatch.ResetShuffle();
         }
+
         Log.LogInfo($"Shuffle {(IsShuffleEnabled ? "enabled" : "disabled")}");
     }
 
@@ -103,10 +132,8 @@ public class Plugin : BaseUnityPlugin
             return value;
 
         return Path.Combine(
-            Paths.PluginPath,
-            $"{PluginAuthor}-{PluginName}",
-            "BetterMediaControls",
-            value
+            Paths.ConfigPath,
+            "BetterMediaControls-Music"
         );
     }
 }
