@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+env:
+  TS_AUTHOR: CutiePatooties
+  TS_NAME: BetterMediaControls
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -47,7 +51,7 @@ jobs:
       - name: Create Thunderstore package
         run: |
           cd thunderstore
-          zip -r ../CutiePatooties-BetterMediaControls-${{ env.VERSION }}.zip ./*
+          zip -r ../${{ env.TS_AUTHOR }}-${{ env.TS_NAME }}-${{ env.VERSION }}.zip ./*
     
       - name: Create Github Draft Release
         id: create_release
@@ -57,6 +61,6 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
           body: "Release ${{ github.ref_name }}"
-          files: CutiePatooties-BetterMediaControls-${{ env.VERSION }}.zip
+          files: ${{ env.TS_AUTHOR }}-${{ env.TS_NAME }}-${{ env.VERSION }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

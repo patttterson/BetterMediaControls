@@ -5,7 +5,7 @@ A simple plugin for [On-Together: Virtual Co-Working](https://store.steampowered
 You can add your own custom songs to the media controls by placing audio files in the `BepInEx/config/BetterMediaControls-Music` directory.
 
 Currently, `.wav`, `.ogg`, and `.mp3` files are supported. Any other file formats will be ignored.
-> Use https://vert.sh/ for quick and easy audio file conversion
+> Use https://vert.sh/ for quick and easy audio file conversion, and https://cobalt.tools/ to download audio. (not an ad!)
 
 ### Identifying
 By default, the songs will be identified by their file names. However, you can create a `playlist.json` file in the same directory to provide this metadata.

@@ -17,7 +17,7 @@ public class Plugin : BaseUnityPlugin
     // ReSharper disable once InconsistentNaming
     private const string PluginGUID = "com.patty.bettermediacontrols";
     private const string PluginName = "BetterMediaControls";
-    private const string PluginVersion = "1.1.1";
+    private const string PluginVersion = "1.1.2";
     private const string PluginAuthor = "CutiePatooties"; // as seen on thunderstore
 
     private readonly Harmony _harmony = new Harmony(PluginGUID);
@@ -42,7 +42,7 @@ public class Plugin : BaseUnityPlugin
         _configMusicDir = Config.Bind(
             "General",
             "MusicDirectory",
-            Path.Combine(Paths.ConfigPath, "BetterMediaControls-Music"),
+            Path.Combine(Paths.ConfigPath, $"{PluginName}-Music"),
             "Supports .wav, .ogg, and .mp3 files. Directory inside the plugin folder where custom music is stored."
         );
 
@@ -133,7 +133,7 @@ public class Plugin : BaseUnityPlugin
 
         return Path.Combine(
             Paths.ConfigPath,
-            "BetterMediaControls-Music"
+            $"{PluginName}-Music"
         );
     }
 }

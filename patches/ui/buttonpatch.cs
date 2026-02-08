@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 using BetterMediaControls.util;
 
-namespace BetterMediaControls.patches;
+namespace BetterMediaControls.patches.ui;
 
 [HarmonyPatch(typeof(UIManager), "Start")]
 public static class ShuffleUIPatch
